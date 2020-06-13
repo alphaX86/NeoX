@@ -25,3 +25,8 @@ For Windows:
     
 The server should be running in background, then go to the link [server](http://127.0.0.1:8000)
     
+## Installing grappelli admin theme
+
+I've used grappelli for the admin UI, so type the foll in cmd
+
+    pip3 install django-grappelli
