@@ -30,3 +30,19 @@ The server should be running in background, then go to the link [server](http://
 I've used grappelli for the admin UI, so type the foll in cmd
 
     pip3 install django-grappelli
+    
+Else, the deploy server won't work properly
+
+## Bypass Links
+
+If you've started the server and running on your system, click the link below to go to the point directly!
+
+[Admin](http://127.0.0.1/admin)
+
+Admin privilege access:
+
+**UserID**:admin
+
+**Password**:admin
+
+**This is just for adding books, users, groups etc**
