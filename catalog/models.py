@@ -1,4 +1,7 @@
 from django.db import models
+from django.contrib.auth.models import User
+from datetime import date
+import datetime
 
 # Create your models here.
 class Genre(models.Model):
@@ -49,6 +52,8 @@ class BookInstance(models.Model):
     imprint = models.CharField(max_length=200)
     due_back = models.DateField(null=True, blank=True)
 
+    borrower = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
+
     LOAN_STATUS = (
         ('m', 'Maintenance'),
         ('o', 'On loan'),
@@ -65,10 +70,17 @@ class BookInstance(models.Model):
 
     class Meta:
         ordering = ['due_back']
+        permissions = (("can_mark_returned", "Set book as returned"),)
 
     def __str__(self):
         """String for representing the Model object."""
         return f'{self.id} ({self.book.title})'
+
+    @property
+    def is_overdue(self):
+        if self.due_back and date.today() > self.due_back:
+            return True
+        return False
 
 class Author(models.Model):
     """Model representing an author."""
@@ -87,4 +99,29 @@ class Author(models.Model):
     def __str__(self):
         """String for representing the Model object."""
         return f'{self.last_name}, {self.first_name}'
+
+from django.forms import ModelForm
+
+from catalog.models import BookInstance
+
+class RenewBookModelForm(ModelForm):
+    def clean_due_back(self):
+       data = self.cleaned_data['due_back']
+       
+       # Check if a date is not in the past.
+       if data < datetime.date.today():
+           raise ValueError(('Invalid date - renewal in past'))
+
+       # Check if a date is in the allowed range (+4 weeks from today).
+       if data > datetime.date.today() + datetime.timedelta(weeks=4):
+           raise ValueError(('Invalid date - renewal more than 4 weeks ahead'))
+
+       # Remember to always return the cleaned data.
+       return data
+    
+    class Meta:
+        model = BookInstance
+        fields = ['due_back']
+        labels = {'due_back': ('New renewal date')}
+        help_texts = {'due_back': ('Enter a date between now and 4 weeks (default 3).')} 
 
