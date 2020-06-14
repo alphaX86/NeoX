@@ -12,6 +12,14 @@ Assuming that Python 3.6 or later has been installed, Django can be installed us
     pip install django
 
 Then after that, download the repository and extact the zip files
+    
+## Installing grappelli admin theme
+
+I've used grappelli for the admin UI, so type the foll in cmd
+
+    pip3 install django-grappelli
+    
+Else, the deploy server won't work properly
 
 Finally run the command,
 
@@ -23,15 +31,7 @@ For Windows:
 
     py -3 manage.py runserver
     
-The server should be running in background, then go to the link [server](http://127.0.0.1:8000)
-    
-## Installing grappelli admin theme
-
-I've used grappelli for the admin UI, so type the foll in cmd
-
-    pip3 install django-grappelli
-    
-Else, the deploy server won't work properly
+The server should be running in background, then go to the link [server](http://127.0.0.1:8000) **This is for normal view**
 
 ## Bypass Links
 
